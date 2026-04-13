@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Oasis | Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { height: 100vh; background: radial-gradient(circle at top, #0f172a, #020617); display: flex; justify-content: center; align-items: center; color: #fff; overflow: hidden; }
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+        .container { width: 95%; max-width: 420px; padding: 25px; border-radius: 24px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); text-align: center; position: relative; z-index: 2; max-height: 95vh; overflow-y: auto; }
+        .container::-webkit-scrollbar { display: none; }
+
+        .logo { width: 85px; height: 85px; border-radius: 50%; background: linear-gradient(135deg, #FF73FA, #00FFFF); margin: 0 auto 15px; box-shadow: 0 0 30px rgba(255, 115, 250, 0.5); border: 3px solid rgba(255,255,255,0.1); }
+        h1 { font-size: 26px; font-weight: 800; letter-spacing: 3px; margin-bottom: 5px; }
+        .subtitle { font-size: 13px; opacity: .6; margin-bottom: 25px; letter-spacing: 1px; }
+
+        .main-btn { display: block; width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 14px; background: linear-gradient(120deg, #FF73FA, #00FFFF); color: #000; font-weight: 800; text-decoration: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2); }
+        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 255, 255, 0.4); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .grid-btn { padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.3s; }
+        .grid-btn:hover { background: rgba(0, 255, 255, 0.1); border-color: #00FFFF; }
+
+        /* THE OASIS PASSPORT CARD */
+        .passport-card { background: rgba(0, 0, 0, 0.4); border-radius: 18px; padding: 20px; border: 1px solid rgba(0, 255, 255, 0.2); text-align: left; position: relative; overflow: hidden; }
+        .passport-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 115, 250, 0.05), transparent); transform: rotate(45deg); pointer-events: none; }
+        .stat-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+        .stat-label { opacity: 0.5; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-weight: 700; color: #00FFFF; text-shadow: 0 0 10px rgba(0,255,255,0.5); }
+        .status-dot { height: 8px; width: 8px; background: #00ff88; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #00ff88; }
+
+        /* ADMIN PANEL STYLES */
+        .admin-toggle { position: fixed; bottom: 10px; right: 10px; font-size: 10px; opacity: 0.2; cursor: pointer; z-index: 10; }
+        .admin-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #020617; padding: 30px; border-radius: 20px; border: 1px solid #FF73FA; z-index: 100; display: none; width: 300px; box-shadow: 0 0 100px #000; }
+        .admin-panel input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; }
+        .admin-panel button { width: 100%; padding: 12px; background: #00FFFF; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .close-admin { position: absolute; top: 10px; right: 10px; cursor: pointer; opacity: 0.5; }
+
+        .section-title { font-size: 10px; letter-spacing: 2px; opacity: .4; margin: 15px 0 10px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <canvas id="sand"></canvas>
+
+    <div class="container">
+        <div class="logo"></div>
+        <h1>THE OASIS</h1>
+        <p class="subtitle">Your Sanctuary in the Digital Desert</p>
+
+        <a href="https://discord.gg/zkNGrFTc6S" target="_blank" class="main-btn">ENTER THE SANCTUARY</a>
+
+        <p class="section-title">Explore the Sands</p>
+        <div class="grid">
+            <a href="https://www.tiktok.com/@the.oasis18" target="_blank" class="grid-btn">TikTok</a>
+            <a href="https://www.instagram.com/theoasisbot" target="_blank" class="grid-btn">Instagram</a>
+            <a href="#" class="grid-btn">YouTube</a>
+            <a href="#" class="grid-btn">The Bazaar</a>
+        </div>
+
+        <p class="section-title">Oasis Passport Status</p>
+        <div class="passport-card">
+            <div class="stat-line">
+                <span class="stat-label">Citizenship</span>
+                <span class="stat-value" id="displayCount">1,240 Members</span>
+            </div>
+            <div class="stat-line">
+                <span class="stat-label">Power Level</span>
+                <span class="stat-value" id="displayBoost">Boost Level 3</span>
+            </div>
+            <div class="stat-line">
+                <span class="stat-label">System Status</span>
+                <span class="stat-value"><span class="status-dot"></span> Secure & Active</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-toggle" onclick="showAdmin()">Admin Access</div>
+    
+    <div class="admin-panel" id="adminBox">
+        <span class="close-admin" onclick="hideAdmin()">✕</span>
+        <h2 style="margin-bottom:15px; font-size: 18px;">Citadel Control</h2>
+        <div id="loginSection">
+            <input type="password" id="passInput" placeholder="Enter Access Code">
+            <button onclick="checkPass()">Login</button>
+        </div>
+        <div id="editSection" style="display:none;">
+            <input type="text" id="newCount" placeholder="Member Count (e.g. 1,500)">
+            <input type="text" id="newBoost" placeholder="Boost Level (e.g. 3)">
+            <button onclick="saveChanges()">Update Passport</button>
+        </div>
+    </div>
+
+    <script>
+        // ADMIN LOGIC
+        function showAdmin() { document.getElementById('adminBox').style.display = 'block'; }
+        function hideAdmin() { document.getElementById('adminBox').style.display = 'none'; }
+
+        function checkPass() {
+            const pass = document.getElementById('passInput').value;
+            if(pass === 'looking_for.love') {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'block';
+            } else { alert('Access Denied: Incorrect Code'); }
+        }
+
+        function saveChanges() {
+            const count = document.getElementById('newCount').value;
+            const boost = document.getElementById('newBoost').value;
+            
+            if(count) {
+                localStorage.setItem('oasis_members', count);
+                document.getElementById('displayCount').innerText = count + " Members";
+            }
+            if(boost) {
+                localStorage.setItem('oasis_boost', boost);
+                document.getElementById('displayBoost').innerText = "Boost Level " + boost;
+            }
+            hideAdmin();
+        }
+
+        // Load saved data
+        window.onload = () => {
+            const savedCount = localStorage.getItem('oasis_members');
+            const savedBoost = localStorage.getItem('oasis_boost');
+            if(savedCount) document.getElementById('displayCount').innerText = savedCount + " Members";
+            if(savedBoost) document.getElementById('displayBoost').innerText = "Boost Level " + savedBoost;
+        };
+
+        // PARTICLES
+        const canvas = document.getElementById('sand');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        class Particle {
+            constructor() { this.reset() }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.speedY = Math.random() * 0.4 + 0.1;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.y > canvas.height) { this.reset(); this.y = 0; }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+        function init() { for (let i = 0; i < 100; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+    </script>
+</body>
+  </html>
+              
